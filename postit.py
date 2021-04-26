@@ -8,7 +8,7 @@ from tkinter import scrolledtext
 from tkinter import filedialog
 from tkinter import messagebox
 import inspect
-from reportlab.pdfgen.canvas import Canvas
+from reportlab.pdfgen.canvas import Canvasx
 from reportlab.lib.units import inch, cm
 
 WIA_COM = "WIA.CommonDialog"

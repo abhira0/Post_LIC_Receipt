@@ -1,0 +1,5 @@
+pypiwin32
+pygame
+Pillow
+reportlab
+tk
