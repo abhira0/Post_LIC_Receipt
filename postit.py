@@ -1,15 +1,17 @@
 # This is to scan using cannon printer automatically and save it as image file
-import win32com.client, time, os
-import pygame, sys
-from PIL import Image
-import tkinter as tk
-from tkinter.ttk import *
-from tkinter import scrolledtext
-from tkinter import filedialog
-from tkinter import messagebox
 import inspect
+import os
+import sys
+import time
+import tkinter as tk
+from tkinter import filedialog, messagebox, scrolledtext
+from tkinter.ttk import *
+
+import pygame
+import win32com.client
+from PIL import Image
+from reportlab.lib.units import cm, inch
 from reportlab.pdfgen.canvas import Canvas
-from reportlab.lib.units import inch, cm
 
 WIA_COM = "WIA.CommonDialog"
 WIA_DEVICE_UNSPECIFIED = 0
@@ -333,18 +335,3 @@ do.grid(
 # Loop
 # ------------------------------------------------------------------
 window.mainloop()
-
-# wdFormatPDF = 17
-#
-# in_file = os.getcwd()+"\\newpost.pdf"
-# out_file = os.getcwd()+"\\address.docx"
-# print(in_file)
-# word = win32com.client.Dispatch('Word.Application')
-# doc = word.Documents.Open(in_file)
-# with doc.PageSetup:
-#     PageHeight = InchesToPoints(8)
-#     PageWidth = InchesToPoints(4)
-# # doc.SaveAs(out_file, FileFormat=wdFormatPDF)
-# doc.Close()
-# word.Quit()
-#
