@@ -8,7 +8,7 @@ from tkinter import scrolledtext
 from tkinter import filedialog
 from tkinter import messagebox
 import inspect
-from reportlab.pdfgen.canvas import Canvasx
+from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.units import inch, cm
 
 WIA_COM = "WIA.CommonDialog"
@@ -266,7 +266,7 @@ def addAddress():
 
 
 window = tk.Tk()
-window.title("All Size Photo Builder v{}".format(C4U.versionX))
+window.title("Post It v{}".format(C4U.versionX))
 window.geometry(
     "{}x{}".format(C4U.grid_offsets["xscreen"], C4U.grid_offsets["yscreen"])
 )
