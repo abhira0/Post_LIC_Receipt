@@ -10,8 +10,6 @@ from tkinter.ttk import *
 import pygame
 import win32com.client
 from PIL import Image
-from reportlab.lib.units import cm, inch
-from reportlab.pdfgen.canvas import Canvas
 
 WIA_COM = "WIA.CommonDialog"
 WIA_DEVICE_UNSPECIFIED = 0

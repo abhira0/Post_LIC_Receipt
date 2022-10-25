@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div style="text-align: center;">
+        <form action="/scan">
+            <input type="submit" value="SCAN" onClick="this.form.submit();this.disabled = true;"
+                style="font-size: 40px;" />
+        </form>
+    </div>
+
+    <div>
+        <table>
+            {% for key, val in images.items() %}
+            <tr>
+                <td>
+                    <button onclick="printPdf(&quot;{{val['pdf_path']}}&quot;)" style="font-size: 25px;">
+                        Print PDF
+                    </button>
+                </td>
+                <td>
+                    <img src=" {{val['cropped_image_path']}}" style="width: 200px; height: auto">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script>
+        printPdf = function (url) {
+            var iframe = this._printIframe;
+            if (!this._printIframe) {
+                iframe = this._printIframe = document.createElement('iframe');
+                document.body.appendChild(iframe);
+
+                iframe.style.display = 'none';
+                iframe.onload = function () {
+                    setTimeout(function () {
+                        iframe.focus();
+                        iframe.contentWindow.print();
+                    }, 1);
+                };
+            }
+
+            iframe.src = url;
+        }
+    </script>
+</body>
+
+</html>
