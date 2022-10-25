@@ -25,6 +25,7 @@ __Written in: Python 3__<br>
 #### Source Code + Command Line Call = GUI
 1. Clone the repository
 1. Open the command prompt inside cloned directory
+1. Install dependencies using `pip install -r requirements.txt`
 1. Type in "`python postit.py`" and hit enter
 1. A GUI must pop up, use it.
 1. For the verbose, watch command line you opened to start GUI.
