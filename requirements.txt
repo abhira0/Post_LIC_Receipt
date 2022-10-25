@@ -1,5 +1,4 @@
-pypiwin32
-pygame
+flask
 Pillow
-reportlab
-tk
+requests
+pywin32
