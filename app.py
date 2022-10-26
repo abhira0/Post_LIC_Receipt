@@ -14,6 +14,9 @@ from foundation import Printer, ScannedImage
 
 app = Flask(__name__)
 
+FLASK_IP = "127.0.0.1"
+FLASK_PORT = "1234"
+
 SESSION_DATA = {}
 SCAN_ERROR = ""
 
@@ -25,14 +28,6 @@ def home():
 
 @app.route("/scan")
 def scan():
-    # https://stackoverflow.com/questions/26745617/win32com-client-dispatch-cherrypy-coinitialize-has-not-been-called
-    # To avoid errors of COM, use the below line
-    pythoncom.CoInitialize()
-
-    # Scan the object and return the absolute path of the scanned image
-    scanned_image_path = Printer().acquire_image_wia()
-
-    return redirect(f"/crop?scanned_image_path={quote_plus(scanned_image_path)}")
     global SCAN_ERROR
     try:
         # https://stackoverflow.com/questions/26745617/win32com-client-dispatch-cherrypy-coinitialize-has-not-been-called
@@ -40,12 +35,18 @@ def scan():
         pythoncom.CoInitialize()
         # Scan the object and return the absolute path of the scanned image
         scanned_image_path = Printer().acquire_image_wia()
+        scanned_image_path = f"http://{FLASK_IP}:{FLASK_PORT}/{scanned_image_path}"
+        SESSION_DATA[scanned_image_path] = {
+            "crop_url": f"/crop?scanned_image_path={quote_plus(scanned_image_path)}"
+        }
+        defaultCrop(scanned_image_path)
         SCAN_ERROR = ""
     except Exception as e:
         SCAN_ERROR = (
             "1. Please turn on printer and connect it to your computer;\n"
             "2. Do not turn off computer in the middle of the scan"
         )
+    return redirect("/")
 
 
 @app.route("/crop")
@@ -59,21 +60,30 @@ def crop():
 def postCropInfo():
     resp = request.json
     print(resp)
+    cropAndSave(resp)
+    return redirect("/")
+
+
+def defaultCrop(scanned_image_path):
+    resp = {
+        "scanned_image_path": scanned_image_path,
+        "x": 10,
+        "y": 1855,
+        "width": 685,
+        "height": 295,
+    }
+    cropAndSave(resp)
+
+
+def cropAndSave(resp):
     scanned_image_path = resp["scanned_image_path"]
-    SESSION_DATA[scanned_image_path] = resp
+    SESSION_DATA[scanned_image_path].update(resp)
     image = ScannedImage(scanned_image_path)
     cropped_image_path = image.crop(resp)
     SESSION_DATA[scanned_image_path]["cropped_image_path"] = cropped_image_path
     pdf_path = image.saveAsPDF()
     SESSION_DATA[scanned_image_path]["pdf_path"] = pdf_path
-    return redirect("/")
-
-
-@app.route("/download_pdf")
-def tos():
-    filepath = "/static/2022-10-25_16-59-59/a4.pdf"
-    return f"""<embed src="{filepath}">"""
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="1234")
+    app.run(host=FLASK_IP, port=FLASK_PORT)
