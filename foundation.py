@@ -110,7 +110,7 @@ class ScannedImage:
             ratio = 256 / addr.height
             addr = addr.resize((int(addr.width * ratio), int(addr.height * ratio)))
 
-        logger.info(addr.width, addr.height)
+        logger.info(f"{addr.width}, {addr.height}")
 
         post = Image.open("./static/base.jpg")
         # post.crop((699,285,1259,561)).show()
