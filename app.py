@@ -20,7 +20,7 @@ SCAN_ERROR = ""
 
 @app.route("/")
 def home():
-    return render_template("home.html", images=SESSION_DATA)
+    return render_template("home.html", images=SESSION_DATA, SCAN_ERROR=SCAN_ERROR)
 
 
 @app.route("/scan")
