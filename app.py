@@ -15,6 +15,7 @@ from foundation import Printer, ScannedImage
 app = Flask(__name__)
 
 SESSION_DATA = {}
+SCAN_ERROR = ""
 
 
 @app.route("/")
@@ -32,6 +33,19 @@ def scan():
     scanned_image_path = Printer().acquire_image_wia()
 
     return redirect(f"/crop?scanned_image_path={quote_plus(scanned_image_path)}")
+    global SCAN_ERROR
+    try:
+        # https://stackoverflow.com/questions/26745617/win32com-client-dispatch-cherrypy-coinitialize-has-not-been-called
+        # To avoid errors of COM, use the below line
+        pythoncom.CoInitialize()
+        # Scan the object and return the absolute path of the scanned image
+        scanned_image_path = Printer().acquire_image_wia()
+        SCAN_ERROR = ""
+    except Exception as e:
+        SCAN_ERROR = (
+            "1. Please turn on printer and connect it to your computer;\n"
+            "2. Do not turn off computer in the middle of the scan"
+        )
 
 
 @app.route("/crop")

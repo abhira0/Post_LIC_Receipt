@@ -2,6 +2,10 @@
 <html>
 
 <body>
+    {% if SCAN_ERROR %}
+    <div id="scan-error" style="color: red;">{{SCAN_ERROR}}</div>
+    {% endif %}
+
     <div style="text-align: center;">
         <form action="/scan">
             <input type="submit" value="SCAN" onClick="this.form.submit();this.disabled = true;"
