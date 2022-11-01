@@ -1,14 +1,7 @@
 from urllib.parse import quote_plus, unquote_plus
 
 import pythoncom
-from flask import (
-    Flask,
-    send_from_directory,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
+from flask import Flask, redirect, render_template, request
 
 from foundation import Printer, ScannedImage
 

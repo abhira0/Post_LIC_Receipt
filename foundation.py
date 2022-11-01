@@ -2,9 +2,9 @@ import logging
 import os
 import sys
 from datetime import datetime
+from io import BytesIO
 
 import requests
-from io import BytesIO
 import win32com.client
 from PIL import Image
 
