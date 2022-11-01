@@ -3,7 +3,7 @@ from urllib.parse import quote_plus, unquote_plus
 import pythoncom
 from flask import Flask, redirect, render_template, request
 
-from foundation import Printer, ScannedImage
+from foundation import InitialWipeOut, Printer, ScannedImage
 
 app = Flask(__name__)
 
@@ -79,4 +79,5 @@ def cropAndSave(resp):
 
 
 if __name__ == "__main__":
+    InitialWipeOut()
     app.run(host=FLASK_IP, port=FLASK_PORT)

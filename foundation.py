@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 import sys
 from datetime import datetime
 from io import BytesIO
@@ -54,6 +55,8 @@ class Printer:
         Ref\n
             https://stackoverflow.com/questions/15631046/i-want-to-connect-my-program-to-image-scanner"""
 
+        if not os.path.exists("static/tmp"):
+            os.mkdir("static/tmp")
         wia = win32com.client.Dispatch(self.WIA_COM)  # wia is a CommonDialog object
         dev = wia.ShowSelectDevice()
         try:
@@ -73,8 +76,8 @@ class Printer:
 
         try:
             timestamp = str(datetime.now()).replace(":", "-")[:19].replace(" ", "_")
-            os.mkdir(f"static/{timestamp}")
-            fname = f"static/{timestamp}/receipt.png"
+            os.mkdir(f"static/tmp/{timestamp}")
+            fname = f"static/tmp/{timestamp}/receipt.png"
             image.SaveFile(fname)
             logger.info(f"Scanned image got saved as {fname}")
             return fname
@@ -97,7 +100,7 @@ class ScannedImage:
         self.cropped_image = img.crop((left, top, right, bottom))
 
         op_path = self.scanned_image_path.split("/")[-2]
-        op_path = f"static/{op_path}/cropped.png"
+        op_path = f"static/tmp/{op_path}/cropped.png"
         self.cropped_image.save(op_path)
         return op_path
 
@@ -121,6 +124,14 @@ class ScannedImage:
         a4 = a4.rotate(180)
 
         op_path = self.scanned_image_path.split("/")[-2]
-        op_path = f"static/{op_path}/a4.pdf"
+        op_path = f"static/tmp/{op_path}/a4.pdf"
         a4.save(op_path)
         return op_path
+
+
+class InitialWipeOut:
+    def __init__(self) -> None:
+        path = "static/tmp"
+        logger.info(f"Removing the directory {path}")
+        if os.path.exists(path):
+            shutil.rmtree(path)
